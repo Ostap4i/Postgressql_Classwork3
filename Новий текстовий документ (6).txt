@@ -1,0 +1,57 @@
+drop table if EXISTS Wards;
+drop table if EXISTS Department;
+drop table if EXISTS Doctors;
+drop table if EXISTS DoctorsExaminations;
+drop table if EXISTS Examination;
+
+
+CREATE TABLE Department (
+id serial PRIMARY key,
+building int not null check(building  BETWEEN 1 and 5),
+name varchar(100) not null,
+unique(name)
+);
+
+CREATE table Wards (
+id serial primary key,
+name varchar(20) not null,
+UNIQUE(name),
+places int not null check(places  > 1),
+departmentld_id int not null references Department(id)
+);
+
+insert into Wards(name, places, departmentld_id) VALUES
+('Josh', 'C', '3'),
+('Mike', 'A', '1'),
+('Joe', 'B', '2');
+
+insert into Department(building, name) VALUES
+('Josh', '1'),
+('Mike', '3'),
+('Joe', '2');
+
+create table Doctors (
+id serial primary key,
+name varchar(255) not null,
+premium int not null default 1 check(premium > 0),
+salary int not null check(salary > 0),
+surname varchar(255) not null
+);
+
+insert into Doctors(name, surname, salary, premium) values
+('Andriy', "Huk", "500","50"),
+('Bogdan', "Sad", "1100","120"),
+('Dmitro', "Leskiv", "1500","100");
+
+
+create table DoctorsExaminations (
+id serial primary key,
+ endtime time not null check(endtime > starttime),
+ starttime time not null check(starttime > '08:00:00' and starttime < '18:00:00' ),
+ Doctor_id int not null references Doctors(id),
+ Examination_id int not null references Examinations(id),
+ Ward_id int not null references Wards(id)
+);
+
+insert into  DoctorsExaminations()
+
